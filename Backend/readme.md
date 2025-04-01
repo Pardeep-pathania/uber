@@ -53,3 +53,99 @@ Example:
   ]
 }
 ```
+
+## /users/login Endpoint Documentation
+
+### Description
+This endpoint authenticates a user by validating the email and password provided, returning an authentication token and user details.
+
+### Endpoint
+`POST /users/login`
+
+### Request Body
+- `email`: a string (required, valid email format)
+- `password`: a string (required, minimum 6 characters)
+
+### Responses
+
+#### Success (200 OK)
+- Returns a JSON object with:
+  - `token`: the generated JWT authentication token.
+  - `user`: the authenticated user object.
+
+Example:
+```json
+{
+  "token": "<jwt_token>",
+  "user": {
+    "_id": "user_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+    // ...other user fields
+  }
+}
+```
+
+#### Error (400 Bad Request / 401 Unauthorized)
+- Validation errors (400): Returns a JSON object with an `errors` array.
+- Authentication failure (401): Returns a JSON object with a message "Invalid email or password".
+
+## /users/profile Endpoint Documentation
+
+### Description
+Returns the authenticated user's profile details.
+
+### Endpoint
+GET /users/profile
+
+### Authentication
+Requires a valid JWT token in a cookie or the Authorization header.
+
+### Responses
+
+#### Success (200 OK)
+- Returns a JSON object with the user's profile.
+
+Example:
+```json
+{
+  "user": {
+    "_id": "user_id",
+    "fullname": { "firstname": "John", "lastname": "Doe" },
+    "email": "john.doe@example.com"
+    // ...other user fields
+  }
+}
+```
+
+#### Error (401 Unauthorized)
+- Returned if the token is missing or invalid.
+
+## /users/logout Endpoint Documentation
+
+### Description
+Logs out the authenticated user by clearing the token cookie and blacklisting the JWT token.
+
+### Endpoint
+GET /users/logout
+
+### Authentication
+Requires a valid JWT token in a cookie or the Authorization header.
+
+### Responses
+
+#### Success (200 OK)
+- Returns a confirmation message.
+
+Example:
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+#### Error (401 Unauthorized)
+- Returned if the token is missing or invalid.
