@@ -149,3 +149,70 @@ Example:
 
 #### Error (401 Unauthorized)
 - Returned if the token is missing or invalid.
+
+## /captain/register Endpoint Documentation
+
+### Description
+This endpoint registers a new captain by accepting captain details, including personal and vehicle information.
+
+### Endpoint
+`POST /captain/register`
+
+### Request Body
+- `fullname`: an object containing:
+  - `firstname` (string, required, minimum 3 characters)
+- `email`: a string (required, valid email format)
+- `password`: a string (required, minimum 6 characters)
+- `vehicle`: an object containing:
+  - `color` (string, required, minimum 3 characters)
+  - `plate` (string, required, minimum 3 characters)
+  - `capacity` (integer, required, minimum 1)
+  - `vehicleType` (string, required, must be one of `car`, `motorcycle`, or `auto`)
+
+### Responses
+
+#### Success (201 Created)
+- Returns a JSON object with the newly created captain's details.
+
+Example:
+```json
+{
+  "captain": {
+    "_id": "captain_id",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+#### Error (400 Bad Request)
+- Occurs when the validation fails.
+- Returns a JSON object with an `errors` array detailing the validation issues.
+
+Example:
+```json
+
+{
+  "errors": [
+    {
+      "msg": "First name must be at least 3 characters long",
+      "param": "fullname.firstname",
+      "location": "body"
+    },
+    {
+      "msg": "Please enter a valid email address",
+      "param": "email",
+      "location": "body"
+    }
+    // ...other errors if any
+  ]
+}
