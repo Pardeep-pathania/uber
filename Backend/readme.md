@@ -156,7 +156,7 @@ Example:
 This endpoint registers a new captain by accepting captain details, including personal and vehicle information.
 
 ### Endpoint
-`POST /captain/register`
+`POST /captains/register`
 
 ### Request Body
 - `fullname`: an object containing:
