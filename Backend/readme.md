@@ -150,7 +150,7 @@ Example:
 #### Error (401 Unauthorized)
 - Returned if the token is missing or invalid.
 
-## /captain/register Endpoint Documentation
+## /captains/register Endpoint Documentation
 
 ### Description
 This endpoint registers a new captain by accepting captain details, including personal and vehicle information.
@@ -159,60 +159,180 @@ This endpoint registers a new captain by accepting captain details, including pe
 `POST /captains/register`
 
 ### Request Body
-- `fullname`: an object containing:
-  - `firstname` (string, required, minimum 3 characters)
-- `email`: a string (required, valid email format)
-- `password`: a string (required, minimum 6 characters)
-- `vehicle`: an object containing:
-  - `color` (string, required, minimum 3 characters)
-  - `plate` (string, required, minimum 3 characters)
-  - `capacity` (integer, required, minimum 1)
-  - `vehicleType` (string, required, must be one of `car`, `motorcycle`, or `auto`)
+```json
+{
+  "fullname": {
+    "firstname": "John", // string, required, minimum 3 characters
+    "lastname": "Doe" // string, optional, minimum 3 characters if provided
+  },
+  "email": "john.doe@example.com", // string, required, valid email format
+  "password": "securepassword", // string, required, minimum 6 characters
+  "vehicle": {
+    "color": "Red", // string, required, minimum 3 characters
+    "plate": "ABC123", // string, required, minimum 3 characters
+    "capacity": 4, // integer, required, minimum 1
+    "vehicleType": "car" // string, required, must be one of "car", "motorcycle", or "auto"
+  }
+}
+```
 
 ### Responses
 
 #### Success (201 Created)
-- Returns a JSON object with the newly created captain's details.
-
-Example:
 ```json
 {
   "captain": {
-    "_id": "captain_id",
+    "_id": "captain_id", // string, unique identifier for the captain
     "fullname": {
-      "firstname": "John",
-      "lastname": "Doe"
+      "firstname": "John", // string, captain's first name
+      "lastname": "Doe" // string, captain's last name
     },
-    "email": "john.doe@example.com",
+    "email": "john.doe@example.com", // string, captain's email
     "vehicle": {
-      "color": "Red",
-      "plate": "ABC123",
-      "capacity": 4,
-      "vehicleType": "car"
+      "color": "Red", // string, vehicle color
+      "plate": "ABC123", // string, vehicle plate number
+      "capacity": 4, // integer, vehicle capacity
+      "vehicleType": "car" // string, type of vehicle
+    }
+  },
+  "token": "<jwt_token>" // string, JWT authentication token
+}
+```
+
+#### Error (400 Bad Request)
+```json
+{
+  "errors": [
+    {
+      "msg": "First name must be at least 3 characters long", // error message
+      "param": "fullname.firstname", // parameter that caused the error
+      "location": "body" // location of the error
+    },
+    {
+      "msg": "Please enter a valid email address", // error message
+      "param": "email", // parameter that caused the error
+      "location": "body" // location of the error
+    }
+    // ...other errors if any
+  ]
+}
+```
+
+---
+
+## /captains/login Endpoint Documentation
+
+### Description
+This endpoint authenticates a captain by validating the email and password provided, returning an authentication token and captain details.
+
+### Endpoint
+`POST /captains/login`
+
+### Request Body
+```json
+{
+  "email": "john.doe@example.com", // string, required, valid email format
+  "password": "securepassword" // string, required, minimum 6 characters
+}
+```
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "captain": {
+    "_id": "captain_id", // string, unique identifier for the captain
+    "fullname": {
+      "firstname": "John", // string, captain's first name
+      "lastname": "Doe" // string, captain's last name
+    },
+    "email": "john.doe@example.com", // string, captain's email
+    "vehicle": {
+      "color": "Red", // string, vehicle color
+      "plate": "ABC123", // string, vehicle plate number
+      "capacity": 4, // integer, vehicle capacity
+      "vehicleType": "car" // string, type of vehicle
+    }
+  },
+  "token": "<jwt_token>" // string, JWT authentication token
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "message": "Invalid email or password" // error message for authentication failure
+}
+```
+
+---
+
+## /captains/profile Endpoint Documentation
+
+### Description
+Returns the authenticated captain's profile details.
+
+### Endpoint
+`GET /captains/profile`
+
+### Authentication
+Requires a valid JWT token in a cookie or the Authorization header.
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "captain": {
+    "_id": "captain_id", // string, unique identifier for the captain
+    "fullname": {
+      "firstname": "John", // string, captain's first name
+      "lastname": "Doe" // string, captain's last name
+    },
+    "email": "john.doe@example.com", // string, captain's email
+    "vehicle": {
+      "color": "Red", // string, vehicle color
+      "plate": "ABC123", // string, vehicle plate number
+      "capacity": 4, // integer, vehicle capacity
+      "vehicleType": "car" // string, type of vehicle
     }
   }
 }
 ```
 
-#### Error (400 Bad Request)
-- Occurs when the validation fails.
-- Returns a JSON object with an `errors` array detailing the validation issues.
-
-Example:
+#### Error (401 Unauthorized)
 ```json
-
 {
-  "errors": [
-    {
-      "msg": "First name must be at least 3 characters long",
-      "param": "fullname.firstname",
-      "location": "body"
-    },
-    {
-      "msg": "Please enter a valid email address",
-      "param": "email",
-      "location": "body"
-    }
-    // ...other errors if any
-  ]
+  "message": "Unauthorized access" // error message for missing or invalid token
 }
+```
+
+---
+
+## /captains/logout Endpoint Documentation
+
+### Description
+Logs out the authenticated captain by clearing the token cookie and blacklisting the JWT token.
+
+### Endpoint
+`GET /captains/logout`
+
+### Authentication
+Requires a valid JWT token in a cookie or the Authorization header.
+
+### Responses
+
+#### Success (200 OK)
+```json
+{
+  "message": "Logged out successfully" // confirmation message
+}
+```
+
+#### Error (401 Unauthorized)
+```json
+{
+  "message": "Unauthorized access" // error message for missing or invalid token
+}
+```

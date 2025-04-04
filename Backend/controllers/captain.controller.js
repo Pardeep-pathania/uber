@@ -116,6 +116,8 @@ module.exports.registerCaptain = async (req, res, next) => {
 
     res.status(201).json({ token, captain });
 
+    return next();
+
 }
 
 module.exports.loginCaptain = async (req, res, next) => {
@@ -143,10 +145,13 @@ module.exports.loginCaptain = async (req, res, next) => {
     res.cookie('token', token);
 
     res.status(200).json({ token, captain });
+
+    return next();
 }
 
 module.exports.getCaptainProfile = async (req, res, next) => {
     res.status(200).json({ captain: req.captain });
+    return next();
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {
