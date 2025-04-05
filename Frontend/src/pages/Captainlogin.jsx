@@ -28,7 +28,7 @@ const [captainData, setCaptainData] = useState({})
 
     <div>
     <img 
-             className='w-18 mb-6' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+             className='w-18 mb-2' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
     
             <form onSubmit={submitHandler}>
                 <h3 className='text-lg font-medium mb-2'>What's your email</h3>

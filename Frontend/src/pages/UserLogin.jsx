@@ -4,24 +4,26 @@ import { useState } from 'react'
 
 const UserLogin = () => {
 
- const [email, setEmail] = useState('')
- const [password, setPassword] = useState('')
-
-    const [userData, setUserData] = useState({})
-
- const submitHandler = (e) => {
-    e.preventDefault()
-
-    setUserData({
-        email: email,
-        password: password
-    })
-
-    console.log(userData)
-
-    setEmail('')
-    setPassword('')
- }
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
+  const [userData, setUserData] = useState({})
+  
+   const submitHandler = (e) => {
+      e.preventDefault()
+  
+      setUserData({
+          email: email,
+          password: password
+      })
+  
+      console.log(userData)
+  
+      setEmail('')
+      setPassword('')
+   }
+  
+ 
 
   return (
     <div className='p-7 flex flex-col justify-between h-screen'>
