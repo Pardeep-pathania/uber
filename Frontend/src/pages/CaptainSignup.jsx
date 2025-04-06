@@ -1,32 +1,70 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { CaptainDataContext } from '../context/CaptainContext'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+
 const CaptainSignup = () => {
+
+    const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [userData, setUserData] = useState({})
+
+
+    const [vehicleColor, setVehicleColor] = useState('')
+    const [vehiclePlate, setVehiclePlate] = useState('')
+    const [vehicleCapacity, setVehicleCapacity] = useState('')
+    const [vehicleType, setVehicleType] = useState('')
+
+
+    const {captain, setCaptain} = React.useContext(CaptainDataContext)
   
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
       e.preventDefault()
   
-      setUserData({
-        fullName:{
-          firstName: firstName,
-        lastName: lastName
+      const captainData = {
+        fullname:{
+          firstname: firstName,
+        lastname: lastName
         },
   
         email: email,
         password: password,
+
+        vehicle:{
+          color: vehicleColor,
+          plate: vehiclePlate,
+          capacity: vehicleCapacity,
+          vehicleType: vehicleType
+        }
         
-      })
+      }
+
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData )
+
+      console.log(captainData)
+
+
+      if(response.status === 201){
+        const data = response.data
+        setCaptain(data.captain)
+        localStorage.setItem('token', data.token)
+        navigate('/captain-home')
+      }
   
+      
       setEmail('')
       setPassword('')
       setFirstName('')
       setLastName('')
+      setVehicleColor('')
+      setVehiclePlate('')
+      setVehicleCapacity('') 
+      setVehicleType('')
     }
 
 
@@ -84,8 +122,52 @@ const CaptainSignup = () => {
                 placeholder='password' 
                 value={password}
                 onChange={(e)=>setPassword(e.target.value)}/>
+
+
+          <h3 className='text-lg font-medium mb-2'>Vehicle Details</h3>
+
+          <div className='flex gap-3 mb-5'>
+            <input type="text"
+              className='bg-[#eeeeee] w-1/2 rounded px-4 border text-lg placeholder:text-base py-2'
+              placeholder='Vehicle Color'
+              required
+              value={vehicleColor}
+              onChange={(e)=> setVehicleColor(e.target.value)}
+            />
+
+            <input type="text"
+              className='bg-[#eeeeee] w-1/2 rounded px-4 border text-lg placeholder:text-base py-2'
+              placeholder='Vehicle Plate Number'
+              required
+              value={vehiclePlate}
+              onChange={(e)=> setVehiclePlate(e.target.value)}
+            />
+          </div>
+
+          <div className='flex gap-3 mb-5'>
+            <select 
+              className='bg-[#eeeeee] w-1/2 rounded px-4 border text-lg py-2'
+              value={vehicleType}
+              onChange={(e)=> setVehicleType(e.target.value)}
+              required
+            >
+              <option value="">Select Vehicle Type</option>
+              <option value="car">Car</option>
+              <option value="auto">Auto</option>
+              <option value="bike">Bike</option>
+            </select>
+
+            <input type="number"
+              className='bg-[#eeeeee] w-1/2 rounded px-4 border text-lg placeholder:text-base py-2'
+              placeholder='Seating Capacity'
+              required
+              value={vehicleCapacity}
+              onChange={(e)=> setVehicleCapacity(e.target.value)}
+            />
+          </div>
+
    
-               <button className='bg-[#111] text-white font-semibold rounded px-4  w-full text-lg py-2 mb-3'>Login</button>
+               <button className='bg-[#111] text-white font-semibold rounded px-4  w-full text-lg py-2 mb-3'>Create Captain Account</button>
    
                
            </form>
