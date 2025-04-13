@@ -1,26 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ConfirmRidePopUp = (props) => {
-
-  const [otp, setOtp] = useState("")
-
-  const submitHandler = (e)=>{
-    e.preventDefault()
-  }
-
+const FinishRide = (props) => {
   return (
     <div>
     <h5
       className="p-1 text-center absolute w-[93%] top-0"
       onClick={() => {
-        props.setRidePopUpPanel(false)
+        props.setFinishRidePanel(false)
       }}
     >
       <i className="text-3xl text-gray-400 ri-arrow-down-wide-line"></i>
     </h5>
 
-    <h3 className="text-2xl font-semibold mb-3">Confirm this ride to Start</h3>
+    <h3 className="text-2xl font-semibold mb-3">Finish this Ride</h3>
 
     <div className='flex items-center justify-between p-2 rounded-lg bg-yellow-400'>
       <div className='flex items-center gap-3'>
@@ -70,27 +63,11 @@ const ConfirmRidePopUp = (props) => {
         </div>
       </div>
 
-      <div className='w-full'>
-       
-     <form onSubmit={(e)=>{
-      submitHandler(e)
-     }}>
+      <div className='w-full mt-10'>
 
-      <input value={otp} onChange={()=>setOtp(e.target.value)} type="text" className="bg-gray-300 font-mono px-6 py-4 text-base rounded-lg w-full mt-5" placeholder='Enter OTP'/>
-
-
-     <Link to='/captain-riding' className="flex justify-center mt-3 w-full bg-green-900 text-white text-lg font-semibold p-3 rounded-lg">
-        Confirm
+     <Link to='/captain-home' className="flex text-lg justify-center mt-3 w-full bg-green-900 text-white font-semibold p-3 rounded-lg">
+        Finish
       </Link>
-
-      <button onClick={()=>{
-          props.setConfirmRidePopUpPanel(false)
-          props.setRidePopUpPanel(false)
-        
-      }} className="mt-1 w-full text-lg bg-red-500 text-white font-semibold p-3 rounded-lg">
-        Cancel
-      </button>
-     </form>
 
       </div>
 
@@ -99,4 +76,4 @@ const ConfirmRidePopUp = (props) => {
   )
 }
 
-export default ConfirmRidePopUp
+export default FinishRide
