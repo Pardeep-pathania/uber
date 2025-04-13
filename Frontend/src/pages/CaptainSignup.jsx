@@ -172,11 +172,11 @@ const CaptainSignup = () => {
                
            </form>
            <p className='text-center'>Already have an account? <Link
-           to="/login" className='text-blue-600'>Login here</Link></p>
+           to="/captain-login" className='text-blue-600'>Login here</Link></p>
    </div>
    
    <div>
-      <p className='text-[10px] text-gray-700 leading-tight'>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
+      <p className='text-[10px] mt-6 text-gray-700 leading-tight'>This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.</p>
            </div>
       
        </div>
